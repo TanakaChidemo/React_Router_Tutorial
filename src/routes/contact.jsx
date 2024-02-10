@@ -1,24 +1,22 @@
-import {Form} from "react-router-dom";
+import { Form } from "react-router-dom";
+import PropTypes from "prop-types";
 
-const Contact = () => {
-    const contact = {
-        first:"Your",
-        last:"Name",
-        avatar: "https://placekitten.com/g/200/200",
-        twitter: "your_handle",
-        notes: "Some notes",
-        favorite: true,
-    };
-    
-return (
+export default function Contact() {
+  const contact = {
+    first: "Your",
+    last: "Name",
+    avatar: "https://placekitten.com/g/200/200",
+    twitter: "your_handle",
+    notes: "Some notes",
+    favorite: true,
+  };
+
+  return (
     <div id="contact">
       <div>
-        <img
-          key={contact.avatar}
-          src={contact.avatar || null}
-        />
+        <img key={contact.avatar} src={contact.avatar || null} />
       </div>
- 
+
       <div>
         <h1>
           {contact.first || contact.last ? (
@@ -30,20 +28,21 @@ return (
           )}{" "}
           <Favorite contact={contact} />
         </h1>
- 
+
         {contact.twitter && (
           <p>
             <a
               target="_blank"
+              rel="noreferrer"
               href={`https://twitter.com/${contact.twitter}`}
             >
               {contact.twitter}
             </a>
           </p>
         )}
- 
+
         {contact.notes && <p>{contact.notes}</p>}
- 
+
         <div>
           <Form action="edit">
             <button type="submit">Edit</button>
@@ -52,11 +51,7 @@ return (
             method="post"
             action="destroy"
             onSubmit={(event) => {
-              if (
-                !confirm(
-                  "Please confirm you want to delete this record."
-                )
-              ) {
+              if (!confirm("Please confirm you want to delete this record.")) {
                 event.preventDefault();
               }
             }}
@@ -68,7 +63,7 @@ return (
     </div>
   );
 }
- 
+
 function Favorite({ contact }) {
   // yes, this is a `let` for later
   let favorite = contact.favorite;
@@ -77,11 +72,7 @@ function Favorite({ contact }) {
       <button
         name="favorite"
         value={favorite ? "false" : "true"}
-        aria-label={
-          favorite
-            ? "Remove from favorites"
-            : "Add to favorites"
-        }
+        aria-label={favorite ? "Remove from favorites" : "Add to favorites"}
       >
         {favorite ? "★" : "☆"}
       </button>
@@ -89,4 +80,8 @@ function Favorite({ contact }) {
   );
 }
 
-export default Contact;
+Favorite.propTypes = {
+  contact: PropTypes.shape({
+    favorite: PropTypes.bool.isRequired,
+  }).isRequired,
+};
